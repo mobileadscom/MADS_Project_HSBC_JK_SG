@@ -260,22 +260,31 @@ AdUnit.prototype.render = function () {
   var self = this;
   document.body.style.margin = 0;
   document.body.style.padding = 0;
-  this.app.contentTag.innerHTML = '<div class="ad-container"><div class="screen-1"><img src="'+this.app.path+'img/hsbc-screen-01.png"><form class="form"><input name="nama" class="nama" type="text" required placeholder="Nama"><input name="telepon" type="text" pattern="[0-9.]+" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="No. Telepon" class="telepon"><input type="image" style="border:0;width:22px;height:21px;" border="0" alt="Submit" src="'+this.app.path+'img/check.png" class="check"></form></div><img class="screen-2" src="'+this.app.path+'img/hsbc-screen-02.png"></div>'
+  this.app.contentTag.innerHTML = '<div class="ad-container"><div class="screen-1"><img src="'+this.app.path+'img/hsbc-screen-01.png"><form class="form"><input name="nama" class="name" type="text" required placeholder="Nama"><input name="telepon" type="text" pattern="[0-9.]+" required onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="No. Telepon" class="telepon"><input type="image" style="border:0;width:22px;height:21px;" border="0" alt="Submit" src="'+this.app.path+'img/check.png" class="check"></form></div><img class="screen-2" src="'+this.app.path+'img/hsbc-screen-02.png"></div>'
 
   var main = this.app.contentTag;
   var screen1 = main.querySelector('.screen-1');
   var screen2 = main.querySelector('.screen-2');
   var form = main.querySelector('.form');
-  var nama = main.querySelector('.nama');
+  var name = main.querySelector('.name');
   var telepon = main.querySelector('.telepon');
   var check = main.querySelector('.check');
 
   screen2.addEventListener('click', function() {
+    self.app.tracker('E', 'landing');
     self.app.linkOpener('https://www.hsbc.co.id/1/2/');
   });
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
+
+    var nama = name.value;
+    var telepn = telepon.value;
+
+    self.app.tracker('E', 'submit');
+
+    self.app.loadJs('//www.mobileads.com/api/save_lf?contactEmail=dickale@imx.co.id&gotDatas=1&element=[{%22fieldname%22:%22text_1%22,%22value%22:%22'+nama+'%22},{%22fieldname%22:%22text_2%22,%22value%22:%22'+telepn+'%22}]&user-id=2901&studio-id=355&tab-id=1&trackid=2180&referredURL=Sample%20Ad%20Unit&callback=leadGenCallback');
+
     check.style.opacity = check.style.opacity == 1 ? 0 : 1;
     setTimeout(function() {
       screen2.style.display = 'block';
@@ -291,8 +300,8 @@ AdUnit.prototype.render = function () {
   });
 
   var css = '#rma-widget, .ad-container { width: 320px; height: 480px; } .ad-container, .screen-1, screen-2 { position: relative; }'
-      css += '.form { position: absolute; bottom: 128px; left: 39px; } .form input { display: block; height: 30px; margin-top: 1px; width: 245px; font-size: 18px; border: 1px solid #ccc; outline: none; } .form input:focus { outline: none; }';
-      css += '.check { position: absolute; top: 80px; left: -2px; opacity: 0; transition: opacity 0.3s; }'
+      css += '.form { position: absolute; bottom: 128px; left: 39px; } .form input { display: block; height: 30px; padding-left: 12px; padding-right: 12px; margin-top: 1px; width: 220px; font-size: 18px; border: 1px solid #ccc; outline: none; } .form input:focus { outline: none; }';
+      css += '.check { position: absolute; top: 87px; left: -14px; opacity: 0; transition: opacity 0.3s; }'
       css += '.screen-1 { transition: opacity 0.3s; opacity: 1;}'
       css += '.screen-2 { display: none; transition: opacity 0.3s; opacity: 0; }';
 
